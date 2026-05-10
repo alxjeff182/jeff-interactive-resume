@@ -21,6 +21,7 @@ function markSceneReady() {
     el.classList.add('hidden')
     el.setAttribute('aria-busy', 'false')
   }
+  window.dispatchEvent(new CustomEvent('scene-ready'))
 }
 
 /**

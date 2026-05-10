@@ -122,14 +122,6 @@ body {
   outline-offset: 2px;
 }
 
-.tagline-desktop {
-  display: inline;
-}
-
-.tagline-touch {
-  display: none;
-}
-
 .tagline-zoom-hint {
   display: inline-block;
   padding: 0 5px;
@@ -148,26 +140,6 @@ body {
   font-size: 11px;
   font-family: inherit;
   color: #b6f0d2;
-}
-
-@media (pointer: coarse), (max-width: 1024px) {
-  .tagline-desktop {
-    display: none;
-  }
-
-  .tagline-touch {
-    display: inline;
-  }
-}
-
-@media (min-width: 1025px) and (pointer: fine) {
-  .tagline-desktop {
-    display: inline !important;
-  }
-
-  .tagline-touch {
-    display: none !important;
-  }
 }
 
 /* ── Loading ───────────────────────────────────────────── */
@@ -425,7 +397,7 @@ body.photo-mode .photo-exit-btn {
     display: flex;
   }
 
-  /* Bottom hint pill — tagline is already in touch bar; hide to reduce clutter. */
+  /* Bottom hint pill — mobile uses guided tour + on-canvas labels; hide to reduce clutter. */
   #cv-hint {
     display: none !important;
   }
@@ -442,6 +414,41 @@ body.photo-mode .photo-exit-btn {
 @media (min-width: 1025px) and (pointer: fine) {
   .mobile-controls {
     display: none !important;
+  }
+}
+
+/* Scene tour (driver.js) — replay via "?" — raised on touch layouts so it clears on-screen controls */
+.mobile-tour-trigger {
+  display: inline-flex;
+  position: fixed;
+  z-index: 290;
+  right: max(16px, env(safe-area-inset-right, 0px));
+  bottom: max(24px, env(safe-area-inset-bottom, 0px));
+  width: 38px;
+  height: 38px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(22, 24, 38, 0.92);
+  color: rgba(226, 232, 240, 0.95);
+  font-weight: 700;
+  font-size: 17px;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
+  pointer-events: auto;
+}
+
+.mobile-tour-trigger:focus-visible {
+  outline: 2px solid rgba(76, 175, 130, 0.95);
+  outline-offset: 2px;
+}
+
+@media (pointer: coarse), (max-width: 1024px) {
+  .mobile-tour-trigger {
+    bottom: max(198px, calc(158px + env(safe-area-inset-bottom, 0px)));
   }
 }
 

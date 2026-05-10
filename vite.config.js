@@ -22,6 +22,30 @@ function manualChunks(id) {
   return 'vendor'
 }
 
+/** Dev server: `/en`, `/id` should serve `index.html` like production rewrites. */
+function localeSpaFallbackPlugin() {
+  return {
+    name: 'locale-spa-fallback',
+    configureServer(server) {
+      server.middlewares.use((req, _res, next) => {
+        const raw = req.url ?? ''
+        const pathOnly = raw.split('?')[0]
+        if (
+          req.method === 'GET' &&
+          (pathOnly === '/en' ||
+            pathOnly === '/id' ||
+            pathOnly.startsWith('/en/') ||
+            pathOnly.startsWith('/id/'))
+        ) {
+          const q = raw.includes('?') ? raw.slice(raw.indexOf('?')) : ''
+          req.url = `/index.html${q}`
+        }
+        next()
+      })
+    },
+  }
+}
+
 function resolveSiteUrl(env) {
   const trimSlash = (s) => s.replace(/\/$/, '')
   const withHttps = (hostOrUrl) => {
@@ -69,12 +93,25 @@ Sitemap: ${siteUrl}/sitemap.xml
 `
 
       const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>${siteUrl}/</loc>
+    <loc>${siteUrl}/en</loc>
     <lastmod>${lastmod}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="${siteUrl}/en" />
+    <xhtml:link rel="alternate" hreflang="id" href="${siteUrl}/id" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="${siteUrl}/en" />
+  </url>
+  <url>
+    <loc>${siteUrl}/id</loc>
+    <lastmod>${lastmod}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="${siteUrl}/en" />
+    <xhtml:link rel="alternate" hreflang="id" href="${siteUrl}/id" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="${siteUrl}/en" />
   </url>
 </urlset>
 `
@@ -91,7 +128,7 @@ export default defineConfig(({ mode }) => {
 
   return {
     assetsInclude: ['**/*.ktx2'],
-    plugins: [seoPlugin(siteUrl)],
+    plugins: [localeSpaFallbackPlugin(), seoPlugin(siteUrl)],
     build: {
       rollupOptions: {
         output: {

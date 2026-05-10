@@ -23,6 +23,9 @@ export default [
         URL: 'readonly',
         HTMLElement: 'readonly',
         KeyboardEvent: 'readonly',
+        CustomEvent: 'readonly',
+        getComputedStyle: 'readonly',
+        history: 'readonly',
       },
     },
     rules: {

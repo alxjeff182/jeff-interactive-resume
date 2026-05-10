@@ -2,10 +2,6 @@
 export const MESSAGES_ID = {
   shell: {
     title: 'Jeffry Alexander G. — Resume Interaktif 3D · Senior Frontend Engineer · Jakarta',
-    taglineDesktop:
-      'WASD / panah: jalan · Klik bangunan: detail · Kolam: PDF · Tekan F untuk mode foto',
-    taglineTouch:
-      'Stick: jalan · Ketuk bangunan: detail · Kolam: PDF · Ketuk 📷 untuk mode foto · Cubit atau ± zoom',
     loading: 'Memuat pengalaman 3D...',
     hint: 'Klik bangunan untuk detail · Kolam (Kontak): PDF',
     skipLink: 'Langsung ke peternakan interaktif',
@@ -29,6 +25,37 @@ export const MESSAGES_ID = {
     closePanelAria: 'Tutup panel resume',
     langSwitchToId: 'Ganti bahasa ke Indonesia',
     langSwitchToEn: 'Ganti bahasa ke Inggris',
+    tourTriggerAria: 'Tampilkan panduan',
+    tourTriggerTitle: 'Cara memakai adegan ini',
+  },
+  tour: {
+    next: 'Lanjut',
+    prev: 'Kembali',
+    done: 'Mengerti',
+    stepStickTitle: 'Gerak',
+    stepStickDesc:
+      'Seret stick untuk berjalan — menggantikan WASD / panah di desktop.',
+    stepZoomTitle: 'Zoom',
+    stepZoomDesc:
+      'Ketuk − dan + untuk memperbesar atau memperkecil kamera. Atau cubit dengan dua jari di area peternakan.',
+    stepPhotoTitle: 'Mode foto',
+    stepPhotoDesc:
+      'Ketuk ikon kamera untuk menyembunyikan HUD agar screenshot bersih. Ketuk lagi atau tombol Keluar untuk menampilkan lagi.',
+    stepBTitle: 'Lari — tahan B',
+    stepBDesc:
+      'Tahan B untuk sprint. Lepas untuk berjalan lagi — sama seperti double-tap di keyboard.',
+    stepATitle: 'Interaksi — ketuk A',
+    stepADesc:
+      'Saat sudah cukup dekat dengan bangunan, ketuk A untuk membuka bagian resume. Tombol akan redup sampai kamu dalam jangkauan.',
+    stepDesktopCanvasTitle: 'Jelajah',
+    stepDesktopCanvasDesc:
+      'Pakai WASD atau panah untuk bergerak. Seret di area peternakan untuk memutar kamera. Scroll zoom in/out. Double-tap cepat pada tombol jalan untuk sprint. Tekan F untuk mode foto (HUD bersih). Klik bangunan saat sudah dekat untuk membuka detail resume.',
+    stepDesktopHintTitle: 'Petunjuk',
+    stepDesktopHintDesc:
+      'Pill seperti ini bisa muncul dengan ringkasan. Kolam membuka PDF kontak.',
+    stepDesktopLangTitle: 'Bahasa',
+    stepDesktopLangDesc:
+      'Ganti Inggris / Indonesia — teks UI dan panduan ikut berubah.',
   },
   loading: {
     critical: 'Memuat aset 3D utama...',

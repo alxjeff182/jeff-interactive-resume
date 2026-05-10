@@ -14,12 +14,6 @@ export function injectAppShell() {
       <strong class="site-title"><span id="site-title-text">${MESSAGES_EN.shell.title}</span></strong>
       <button type="button" id="lang-toggle" class="lang-toggle" aria-label="${MESSAGES_EN.shell.langSwitchToId}">EN</button>
     </span>
-    <span class="tagline-desktop">
-      <span id="tagline-desktop-text">${MESSAGES_EN.shell.taglineDesktop}</span>
-    </span>
-    <span class="tagline-touch">
-      <span id="tagline-touch-text">${MESSAGES_EN.shell.taglineTouch}</span>
-    </span>
   </p>
 </header>
 
@@ -64,7 +58,7 @@ export function injectAppShell() {
     <!-- Nintendo-style diamond: top photo, left zoom ±, bottom B, right A -->
     <div class="touch-face-diamond" role="group" aria-label="${MESSAGES_EN.shell.touchActionsAria}">
       <button type="button" class="touch-btn touch-btn-icon touch-diamond-north" id="touch-photo-mode" aria-label="${MESSAGES_EN.shell.touchPhotoAria}" title="${MESSAGES_EN.shell.touchPhotoTitle}">📷</button>
-      <div class="touch-diamond-west touch-diamond-zoom" role="group" aria-label="${MESSAGES_EN.shell.touchZoomAria}">
+      <div class="touch-diamond-west touch-diamond-zoom" id="touch-zoom-group" role="group" aria-label="${MESSAGES_EN.shell.touchZoomAria}">
         <button type="button" class="touch-btn touch-zoom-compact" id="touch-zoom-out" aria-label="${MESSAGES_EN.shell.touchZoomOut}">−</button>
         <button type="button" class="touch-btn touch-zoom-compact" id="touch-zoom-in" aria-label="${MESSAGES_EN.shell.touchZoomIn}">+</button>
       </div>
@@ -73,6 +67,8 @@ export function injectAppShell() {
     </div>
   </div>
 </div>
+
+<button type="button" id="mobile-tour-trigger" class="mobile-tour-trigger" aria-label="${MESSAGES_EN.shell.tourTriggerAria}" title="${MESSAGES_EN.shell.tourTriggerTitle}">?</button>
 
 <button type="button" id="photo-mode-exit" class="photo-exit-btn" aria-label="${MESSAGES_EN.shell.exitPhotoMode}">
   ${MESSAGES_EN.shell.exitPhotoMode}

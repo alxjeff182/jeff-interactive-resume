@@ -1,11 +1,17 @@
 import { loadModels } from '../models/loadModels.js'
 import { setupGround, setupLights, initScene } from '../scene.js'
 import { applyUiLocale, setLocale } from '../i18n/locale.js'
+import {
+  getInitialLocaleFromUrl,
+  installLocaleHistory,
+  pushLocaleToUrl,
+} from '../i18n/urlLocale.js'
 import { state } from '../state.js'
 import { resize, render } from '../game/render.js'
 import { bindLoadErrorRetry } from '../ui/loading.js'
 import { cvOpenPanel } from '../ui/cvPanel.js'
 import { injectAppShell } from '../ui/shell.js'
+import { setupMobileTour } from '../ui/mobileTour.js'
 import { configurePerfTelemetry } from '../perf/metrics.js'
 
 function scheduleDeferredInit(task) {
@@ -17,8 +23,7 @@ function scheduleDeferredInit(task) {
 }
 
 export function initApp() {
-  state.locale = 'en'
-  document.documentElement.lang = 'en'
+  state.locale = getInitialLocaleFromUrl()
 
   injectAppShell()
   applyUiLocale()
@@ -26,6 +31,14 @@ export function initApp() {
   document.getElementById('lang-toggle')?.addEventListener('click', () => {
     const next = state.locale === 'id' ? 'en' : 'id'
     setLocale(next)
+    pushLocaleToUrl(next)
+    applyUiLocale()
+    const open = state.cv.focusLabel
+    if (open) cvOpenPanel(open, null)
+  })
+
+  const stopLocaleHistory = installLocaleHistory(({ locale }) => {
+    setLocale(locale)
     applyUiLocale()
     const open = state.cv.focusLabel
     if (open) cvOpenPanel(open, null)
@@ -44,6 +57,8 @@ export function initApp() {
   configurePerfTelemetry({ intervalMs: 5000 })
 
   const cleanupFns = []
+  cleanupFns.push(setupMobileTour())
+  cleanupFns.push(stopLocaleHistory)
   let disposed = false
 
   setupLights(scene)

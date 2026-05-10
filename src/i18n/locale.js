@@ -1,6 +1,7 @@
 import { state } from '../state.js'
 import { MESSAGES_EN } from './messages.en.js'
 import { MESSAGES_ID } from './messages.id.js'
+import { syncDocumentSeo } from './urlLocale.js'
 
 /** @typedef {'en' | 'id'} Locale */
 
@@ -32,12 +33,6 @@ export function applyUiLocale() {
 
   const titleEl = document.getElementById('site-title-text')
   if (titleEl) titleEl.textContent = m.shell.title
-
-  const desktop = document.getElementById('tagline-desktop-text')
-  if (desktop) desktop.textContent = m.shell.taglineDesktop
-
-  const touch = document.getElementById('tagline-touch-text')
-  if (touch) touch.textContent = m.shell.taglineTouch
 
   const loadingMain = document.getElementById('app-loading-main')
   if (loadingMain) loadingMain.textContent = m.shell.loading
@@ -105,6 +100,12 @@ export function applyUiLocale() {
   const closeBtn = document.getElementById('cv-panel-close')
   if (closeBtn) closeBtn.setAttribute('aria-label', m.shell.closePanelAria)
 
+  const tourTrigger = document.getElementById('mobile-tour-trigger')
+  if (tourTrigger) {
+    tourTrigger.setAttribute('aria-label', m.shell.tourTriggerAria)
+    tourTrigger.setAttribute('title', m.shell.tourTriggerTitle)
+  }
+
   const langToggle = document.getElementById('lang-toggle')
   if (langToggle) {
     // Show active locale on the button; tooltip describes the language you'll switch to.
@@ -112,4 +113,6 @@ export function applyUiLocale() {
     langToggle.setAttribute('title', state.locale === 'id' ? m.shell.langSwitchToEn : m.shell.langSwitchToId)
     langToggle.setAttribute('aria-label', state.locale === 'id' ? m.shell.langSwitchToEn : m.shell.langSwitchToId)
   }
+
+  syncDocumentSeo(state.locale, m.shell.title)
 }

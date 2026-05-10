@@ -11,5 +11,7 @@ describe('ui shell smoke', () => {
     expect(document.getElementById('cv-panel')).toBeTruthy()
     expect(document.getElementById('cv-hint')).toBeTruthy()
     expect(document.getElementById('touch-stick')).toBeTruthy()
+    expect(document.getElementById('mobile-tour-trigger')).toBeTruthy()
+    expect(document.getElementById('touch-zoom-group')).toBeTruthy()
   })
 })
