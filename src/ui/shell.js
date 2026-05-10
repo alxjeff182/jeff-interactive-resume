@@ -61,14 +61,15 @@ export function injectAppShell() {
     </div>
   </div>
   <div class="touch-actions" role="toolbar" aria-label="${MESSAGES_EN.shell.touchToolbarAria}">
-    <div class="touch-main-actions" role="group" aria-label="${MESSAGES_EN.shell.touchActionsAria}">
-      <button type="button" class="touch-btn touch-btn-action" id="touch-action-a" aria-label="${MESSAGES_EN.shell.touchActionA}">A</button>
-      <button type="button" class="touch-btn touch-btn-action touch-btn-sprint" id="touch-action-b" aria-label="${MESSAGES_EN.shell.touchActionB}">B</button>
-    </div>
-    <button type="button" class="touch-btn touch-btn-icon" id="touch-photo-mode" aria-label="${MESSAGES_EN.shell.touchPhotoAria}" title="${MESSAGES_EN.shell.touchPhotoTitle}">📷</button>
-    <div class="touch-zoom" role="group" aria-label="${MESSAGES_EN.shell.touchZoomAria}">
-      <button type="button" class="touch-btn" id="touch-zoom-out" aria-label="${MESSAGES_EN.shell.touchZoomOut}">−</button>
-      <button type="button" class="touch-btn" id="touch-zoom-in" aria-label="${MESSAGES_EN.shell.touchZoomIn}">+</button>
+    <!-- Nintendo-style diamond: top photo, left zoom ±, bottom B, right A -->
+    <div class="touch-face-diamond" role="group" aria-label="${MESSAGES_EN.shell.touchActionsAria}">
+      <button type="button" class="touch-btn touch-btn-icon touch-diamond-north" id="touch-photo-mode" aria-label="${MESSAGES_EN.shell.touchPhotoAria}" title="${MESSAGES_EN.shell.touchPhotoTitle}">📷</button>
+      <div class="touch-diamond-west touch-diamond-zoom" role="group" aria-label="${MESSAGES_EN.shell.touchZoomAria}">
+        <button type="button" class="touch-btn touch-zoom-compact" id="touch-zoom-out" aria-label="${MESSAGES_EN.shell.touchZoomOut}">−</button>
+        <button type="button" class="touch-btn touch-zoom-compact" id="touch-zoom-in" aria-label="${MESSAGES_EN.shell.touchZoomIn}">+</button>
+      </div>
+      <button type="button" class="touch-btn touch-btn-action touch-btn-sprint touch-diamond-south" id="touch-action-b" aria-label="${MESSAGES_EN.shell.touchActionB}">B</button>
+      <button type="button" class="touch-btn touch-btn-action touch-diamond-east" id="touch-action-a" aria-label="${MESSAGES_EN.shell.touchActionA}">A</button>
     </div>
   </div>
 </div>

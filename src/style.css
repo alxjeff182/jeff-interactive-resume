@@ -512,10 +512,53 @@ body.photo-mode .photo-exit-btn {
   gap: 10px;
 }
 
-.touch-main-actions {
-  display: flex;
-  gap: 8px;
+/* Face buttons: Nintendo-like diamond (photo top, zoom −/+ west, B south, A east) */
+.touch-face-diamond {
+  position: relative;
+  width: 176px;
+  height: 176px;
   filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.4));
+}
+
+.touch-diamond-north {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+}
+
+.touch-diamond-west {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.touch-diamond-zoom {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.touch-zoom-compact {
+  min-width: 46px;
+  min-height: 46px;
+  padding: 0;
+  font-size: 20px;
+}
+
+.touch-diamond-south {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+}
+
+.touch-diamond-east {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .touch-btn-action {
@@ -530,13 +573,6 @@ body.photo-mode .photo-exit-btn {
 
 .touch-btn-sprint {
   background: linear-gradient(160deg, rgba(237, 133, 76, 0.95), rgba(191, 91, 45, 0.95));
-}
-
-.touch-zoom {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.4));
 }
 
 .touch-btn {

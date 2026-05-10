@@ -75,10 +75,10 @@ export function applyUiLocale() {
   const touchToolbar = document.querySelector('.touch-actions[aria-label]')
   if (touchToolbar) touchToolbar.setAttribute('aria-label', m.shell.touchToolbarAria)
 
-  const touchGroup = document.querySelector('.touch-main-actions[aria-label]')
+  const touchGroup = document.querySelector('.touch-face-diamond[aria-label]')
   if (touchGroup) touchGroup.setAttribute('aria-label', m.shell.touchActionsAria)
 
-  const touchZoom = document.querySelector('.touch-zoom[aria-label]')
+  const touchZoom = document.querySelector('.touch-diamond-zoom[aria-label]')
   if (touchZoom) touchZoom.setAttribute('aria-label', m.shell.touchZoomAria)
 
   const btnA = document.getElementById('touch-action-a')
