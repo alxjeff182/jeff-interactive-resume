@@ -23,6 +23,19 @@
       ]
     },
     {
+      "source": "/og-cover-social.jpg",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=604800, stale-while-revalidate=86400"
+        },
+        {
+          "key": "Content-Type",
+          "value": "image/jpeg"
+        }
+      ]
+    },
+    {
       "source": "/(.*)\\.glb",
       "headers": [
         {
@@ -43,7 +56,7 @@
   ],
   "rewrites": [
     {
-      "source": "/(.*)",
+      "source": "/((?!.*\\.[A-Za-z0-9]{1,10}$).*)",
       "destination": "/index.html"
     }
   ]

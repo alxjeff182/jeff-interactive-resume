@@ -23,7 +23,23 @@ function manualChunks(id) {
 }
 
 function resolveSiteUrl(env) {
-  return (env.VITE_SITE_URL || DEFAULT_SITE_URL).replace(/\/$/, '')
+  const trimSlash = (s) => s.replace(/\/$/, '')
+  const withHttps = (hostOrUrl) => {
+    const s = trimSlash(hostOrUrl.trim())
+    if (!s) return ''
+    return /^https?:\/\//i.test(s) ? trimSlash(s) : `https://${s}`
+  }
+
+  const fromVite = env.VITE_SITE_URL?.trim()
+  if (fromVite) return withHttps(fromVite)
+
+  const prod = process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim()
+  if (prod) return withHttps(prod)
+
+  const vercel = process.env.VERCEL_URL?.trim()
+  if (vercel) return `https://${trimSlash(vercel)}`
+
+  return trimSlash(DEFAULT_SITE_URL)
 }
 
 function seoPlugin(siteUrl) {

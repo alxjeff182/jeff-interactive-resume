@@ -1,7 +1,7 @@
 /** @type {const} */
 export const MESSAGES_EN = {
   shell: {
-    title: 'Jeffry Alexander G - Interactive Resume',
+    title: 'Jeffry Alexander G. — Interactive 3D Resume · Senior Frontend Engineer · Jakarta',
     taglineDesktop:
       'WASD / arrows to move · Click a building for details · Pond: PDF · Press F for photo mode',
     taglineTouch:

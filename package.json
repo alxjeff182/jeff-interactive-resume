@@ -1,6 +1,6 @@
 {
   "name": "jeff-resume",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -15,6 +15,7 @@
     "compress:models": "node scripts/compress-models.js",
     "optimize:textures": "node scripts/optimize-textures.js",
     "prepare:decoders": "node scripts/prepare-decoders.js",
+    "og:social": "node scripts/optimize-og-social.js",
     "test": "vitest run",
     "release:check": "npm run lint && npm run test && npm run build && npm run perf:budget"
   },

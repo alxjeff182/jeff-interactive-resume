@@ -1,7 +1,7 @@
 /** @type {typeof import('./messages.en.js').MESSAGES_EN} */
 export const MESSAGES_ID = {
   shell: {
-    title: 'Jeffry Alexander G - Resume Interaktif',
+    title: 'Jeffry Alexander G. — Resume Interaktif 3D · Senior Frontend Engineer · Jakarta',
     taglineDesktop:
       'WASD / panah: jalan · Klik bangunan: detail · Kolam: PDF · Tekan F untuk mode foto',
     taglineTouch:
