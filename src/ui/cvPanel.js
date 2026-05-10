@@ -7,6 +7,20 @@ import { resetTouchStick } from './mobileControls.js'
 const FOCUSABLE =
   'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
 
+/** After pushState/replaceState for CV panel — close uses history.back() so mobile OS "back" closes modal first. */
+let cvPanelHistoryActive = false
+let cvHistoryPopListenerAttached = false
+
+function attachCvHistoryPopListener() {
+  if (cvHistoryPopListenerAttached || typeof window === 'undefined') return
+  cvHistoryPopListenerAttached = true
+  window.addEventListener('popstate', () => {
+    if (!state.cv.focusLabel) return
+    cvPanelHistoryActive = false
+    closeCvPanelDomOnly()
+  })
+}
+
 function isVisible(el) {
   if (!(el instanceof HTMLElement)) return false
   return Boolean(el.offsetWidth || el.offsetHeight || el.getClientRects().length)
@@ -76,7 +90,7 @@ function attachFocusTrap(panel) {
 
     if (e.key === 'Escape') {
       e.preventDefault()
-      cvClosePanel()
+      cvClosePanelFromUi()
       return
     }
 
@@ -244,6 +258,8 @@ export function cvOpenPanel(label, obj) {
   const data = resume[/** @type {keyof typeof resume} */ (label)]
   if (!data) return
 
+  const hadPanelOpen = Boolean(state.cv.focusLabel)
+
   state.cv.lastFocusEl = /** @type {HTMLElement | null} */ (document.activeElement)
 
   state.cv.focusLabel = label
@@ -309,6 +325,17 @@ export function cvOpenPanel(label, obj) {
   state.input.sprintPointerId = null
   resetTouchStick()
 
+  attachCvHistoryPopListener()
+  if (typeof history !== 'undefined' && typeof history.pushState === 'function') {
+    const st = { cvPanel: true, label }
+    if (hadPanelOpen) {
+      history.replaceState(st, '')
+    } else {
+      history.pushState(st, '')
+    }
+    cvPanelHistoryActive = true
+  }
+
   attachFocusTrap(panel)
   requestAnimationFrame(() => {
     const closeBtn = document.getElementById('cv-panel-close')
@@ -316,7 +343,7 @@ export function cvOpenPanel(label, obj) {
   })
 }
 
-export function cvClosePanel() {
+function closeCvPanelDomOnly() {
   removeFocusTrap()
 
   state.cv.focusLabel = null
@@ -337,6 +364,22 @@ export function cvClosePanel() {
   if (prev && typeof prev.focus === 'function') {
     requestAnimationFrame(() => prev.focus())
   }
+}
+
+/** Close from in-app UI (X, Esc) — cooperates with History so one back step closes the modal. */
+function cvClosePanelFromUi() {
+  if (cvPanelHistoryActive && typeof history !== 'undefined' && typeof history.back === 'function') {
+    history.back()
+    return
+  }
+  closeCvPanelDomOnly()
+}
+
+/**
+ * Public close API (building pick empty, etc.). Uses history.back when the panel owns a history entry.
+ */
+export function cvClosePanel() {
+  cvClosePanelFromUi()
 }
 
 /** @param {HTMLCanvasElement} targetCanvas */
@@ -377,7 +420,7 @@ export function setupCV(targetCanvas) {
   })
 
   const closeBtn = document.getElementById('cv-panel-close')
-  if (closeBtn) closeBtn.addEventListener('click', cvClosePanel)
+  if (closeBtn) closeBtn.addEventListener('click', cvClosePanelFromUi)
 
   setTimeout(() => {
     if (!state.cv.focusLabel) {
