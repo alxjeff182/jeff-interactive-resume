@@ -321,7 +321,8 @@ export function loadModels(scene) {
         error('models', `Failed to load ${url}`, err)
         showLoadError(`Missing asset: ${url}`, err instanceof Error ? err : null)
       },
-      { preferOptimized: getLoadPhase(label) !== 'critical' },
+      // Try optimized GLBs for all phases (large bandwidth win). Fallback to original on failure.
+      { preferOptimized: MODEL_SOURCE_POLICY === 'optimized' },
     )
     const phase = getLoadPhase(label)
     scheduleLoadByPhase(phase, startLoad)
@@ -489,7 +490,7 @@ export function loadModels(scene) {
           showLoadError('Player model failed to load.', err2 instanceof Error ? err2 : null)
           endCriticalLoad()
         },
-        { preferOptimized: false },
+        { preferOptimized: MODEL_SOURCE_POLICY === 'optimized' },
       )
     },
     (err) => {

@@ -2,8 +2,8 @@ const CRITICAL_LABELS = new Set(['Barn', 'Coop', 'Well', 'University', 'Pond'])
 const IMPORTANT_LABELS = new Set(['Shipping bin', 'Mailbox', 'Fence', 'Stump'])
 
 const PHASE_DELAYS_MS = {
-  important: 24,
-  ambient: 200,
+  important: 48,
+  ambient: 420,
 }
 
 export function isCriticalLabel(label) {
