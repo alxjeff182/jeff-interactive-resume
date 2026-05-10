@@ -1,4 +1,3 @@
-import { getMessages } from '../i18n/locale.js'
 import { state } from '../state.js'
 import {
   applyCameraZoomFactor,
@@ -6,7 +5,6 @@ import {
   togglePhotoMode,
 } from '../game/input.js'
 import { canInteractNearestBuilding, triggerNearestBuildingInteraction } from '../game/interaction.js'
-import { showAppToast } from './toast.js'
 
 const ZOOM_STEP = 1.12
 const STICK_DEAD = 0.08
@@ -109,11 +107,69 @@ export function setupMobileControls(canvas) {
     if (actionAButton?.disabled) return
     triggerNearestBuildingInteraction(canvas)
   }
-  const onActionB = () => {
-    if (state.cv.focusLabel) return
-    state.input.runUntilMs = performance.now() + 1500
-    showAppToast(getMessages().toast.sprint)
+
+  const forceEndSprint = () => {
+    const pid = state.input.sprintPointerId
+    state.input.sprintPointerId = null
+    state.input.sprintHeld = false
+    if (pid === null || !actionBButton) return
+    try {
+      if (actionBButton.hasPointerCapture(pid)) {
+        actionBButton.releasePointerCapture(pid)
+      }
+    } catch {
+      /* ignore */
+    }
   }
+
+  const endSprintIfPointer = (e) => {
+    if (
+      state.input.sprintPointerId === null ||
+      e.pointerId !== state.input.sprintPointerId
+    ) {
+      return
+    }
+    forceEndSprint()
+  }
+
+  const onActionBDown = (e) => {
+    if (e.button !== 0) return
+    if (state.cv.focusLabel) return
+    if (!state.input.sprintHeld && state.input.sprintPointerId !== null) {
+      forceEndSprint()
+    }
+    // Stale sprint from another pointer id — reset before taking this pointer.
+    if (
+      state.input.sprintHeld &&
+      state.input.sprintPointerId !== null &&
+      state.input.sprintPointerId !== e.pointerId
+    ) {
+      forceEndSprint()
+    }
+    state.input.sprintPointerId = e.pointerId
+    state.input.sprintHeld = true
+    try {
+      actionBButton?.setPointerCapture(e.pointerId)
+    } catch {
+      state.input.sprintHeld = false
+      state.input.sprintPointerId = null
+    }
+  }
+
+  const onVisibilityChange = () => {
+    if (document.visibilityState === 'hidden') forceEndSprint()
+  }
+
+  const onWindowBlur = () => {
+    forceEndSprint()
+  }
+
+  // pointerup often fires on document/window, not the button — catch globally.
+  window.addEventListener('pointerup', endSprintIfPointer, true)
+  window.addEventListener('pointercancel', endSprintIfPointer, true)
+  document.addEventListener('visibilitychange', onVisibilityChange)
+  window.addEventListener('blur', onWindowBlur)
+
   const onPhotoExit = () => {
     if (document.body.classList.contains('photo-mode')) togglePhotoMode()
   }
@@ -128,7 +184,10 @@ export function setupMobileControls(canvas) {
   zoomIn?.addEventListener('click', onZoomIn)
   zoomOut?.addEventListener('click', onZoomOut)
   actionAButton?.addEventListener('click', onActionA)
-  actionBButton?.addEventListener('click', onActionB)
+  actionBButton?.addEventListener('pointerdown', onActionBDown)
+  actionBButton?.addEventListener('pointerup', endSprintIfPointer)
+  actionBButton?.addEventListener('pointercancel', endSprintIfPointer)
+  actionBButton?.addEventListener('lostpointercapture', endSprintIfPointer)
   photoBtn?.addEventListener('click', onPhoto)
   photoExitBtn?.addEventListener('click', onPhotoExit)
 
@@ -194,6 +253,11 @@ export function setupMobileControls(canvas) {
   canvas.addEventListener('pointerup', endPinchPointer)
   canvas.addEventListener('pointercancel', endPinchPointer)
   return () => {
+    forceEndSprint()
+    window.removeEventListener('pointerup', endSprintIfPointer, true)
+    window.removeEventListener('pointercancel', endSprintIfPointer, true)
+    document.removeEventListener('visibilitychange', onVisibilityChange)
+    window.removeEventListener('blur', onWindowBlur)
     if (actionStateTimer !== null) window.clearInterval(actionStateTimer)
     stick.removeEventListener('pointerdown', onStickPointerDown)
     stick.removeEventListener('pointermove', onStickPointerMove)
@@ -204,7 +268,10 @@ export function setupMobileControls(canvas) {
     zoomIn?.removeEventListener('click', onZoomIn)
     zoomOut?.removeEventListener('click', onZoomOut)
     actionAButton?.removeEventListener('click', onActionA)
-    actionBButton?.removeEventListener('click', onActionB)
+    actionBButton?.removeEventListener('pointerdown', onActionBDown)
+    actionBButton?.removeEventListener('pointerup', endSprintIfPointer)
+    actionBButton?.removeEventListener('pointercancel', endSprintIfPointer)
+    actionBButton?.removeEventListener('lostpointercapture', endSprintIfPointer)
     photoBtn?.removeEventListener('click', onPhoto)
     photoExitBtn?.removeEventListener('click', onPhotoExit)
     canvas.removeEventListener('pointerdown', onCanvasPointerDown)

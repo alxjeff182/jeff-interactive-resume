@@ -20,7 +20,7 @@ export const MESSAGES_ID = {
     touchActionsAria: 'Aksi interaksi',
     touchZoomAria: 'Zoom',
     touchActionA: 'Interaksi bangunan terdekat',
-    touchActionB: 'Sprint',
+    touchActionB: 'Tahan untuk lari (sama seperti double-tap di desktop)',
     touchPhotoAria: 'Alihkan mode foto',
     touchPhotoTitle: 'Mode foto',
     touchZoomOut: 'Perkecil',

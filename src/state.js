@@ -31,6 +31,10 @@ export const state = {
   input: {
     lastTapMs: /** @type {Record<string, number>} */ ({}),
     runUntilMs: 0,
+    /** Mobile: B button held = sprint (matches desktop run speed + animation). */
+    sprintHeld: false,
+    /** Mobile: which pointer id is holding B (must match on pointerup). */
+    sprintPointerId: /** @type {number | null} */ (null),
   },
   /** Virtual stick + coarse-pointer bookkeeping (see mobileControls / interaction). */
   touch: {

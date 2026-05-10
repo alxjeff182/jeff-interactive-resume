@@ -107,7 +107,8 @@ export function render() {
     if (len > 0) {
       isActiveFrame = true
       const now = performance.now()
-      const wantsRun = now < state.input.runUntilMs
+      const wantsRun =
+        now < state.input.runUntilMs || state.input.sprintHeld
       const speed = wantsRun ? runSpeed : walkSpeed
 
       dx /= len
@@ -133,7 +134,8 @@ export function render() {
       state.input.runUntilMs = 0
     } else {
       const now = performance.now()
-      const wantsRun = now < state.input.runUntilMs
+      const wantsRun =
+        now < state.input.runUntilMs || state.input.sprintHeld
       if (wantsRun && state.characterActions.running) switchAction('running')
       else if (state.characterActions.walking) switchAction('walking')
     }

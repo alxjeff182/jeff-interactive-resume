@@ -365,8 +365,7 @@ body {
 
 body.photo-mode .site-shell,
 body.photo-mode #cv-hint,
-body.photo-mode #app-toast,
-body.photo-mode .mobile-controls {
+body.photo-mode #app-toast {
   opacity: 0 !important;
   pointer-events: none !important;
 }
@@ -375,9 +374,7 @@ body.photo-mode .site-shell {
   visibility: hidden;
 }
 
-body.photo-mode .mobile-controls {
-  visibility: hidden;
-}
+/* Touch / mobile: keep stick + action buttons visible in photo mode (clean frame, still playable). */
 
 .photo-exit-btn {
   display: none;
@@ -428,11 +425,9 @@ body.photo-mode .photo-exit-btn {
     display: flex;
   }
 
+  /* Bottom hint pill — tagline is already in touch bar; hide to reduce clutter. */
   #cv-hint {
-    bottom: max(244px, calc(212px + env(safe-area-inset-bottom, 0px)));
-    max-width: min(320px, calc(100vw - 28px));
-    font-size: 13px;
-    padding: 10px 16px;
+    display: none !important;
   }
 
   #app-toast {

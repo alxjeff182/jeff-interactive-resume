@@ -305,6 +305,8 @@ export function cvOpenPanel(label, obj) {
   if (hint) hint.classList.remove('visible')
 
   state.keys.up = state.keys.down = state.keys.left = state.keys.right = false
+  state.input.sprintHeld = false
+  state.input.sprintPointerId = null
   resetTouchStick()
 
   attachFocusTrap(panel)

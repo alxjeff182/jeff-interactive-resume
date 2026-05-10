@@ -20,7 +20,7 @@ export const MESSAGES_EN = {
     touchActionsAria: 'Interaction actions',
     touchZoomAria: 'Zoom',
     touchActionA: 'Interact with nearest building',
-    touchActionB: 'Sprint',
+    touchActionB: 'Hold to run (same pace as double-tap run on desktop)',
     touchPhotoAria: 'Toggle photo mode',
     touchPhotoTitle: 'Photo mode',
     touchZoomOut: 'Zoom out',

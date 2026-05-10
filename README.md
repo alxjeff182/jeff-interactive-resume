@@ -1,4 +1,12 @@
-# Jeff.Resume — Interactive 3D CV
+<p align="center">
+  <img
+    src="public/og-cover.png"
+    alt="Jeffry Alexander G. — Interactive 3D Resume: retro pixel-art banner with isometric farm, cabins, character, and Explore my digital world"
+    width="1024"
+  />
+</p>
+
+# Jeff — Interactive 3D Resume
 
 A small isometric farm scene built with **Three.js** and **Vite**. Move with **WASD** or arrow keys and click buildings to open resume sections.
 
