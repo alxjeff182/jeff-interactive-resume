@@ -1,0 +1,11 @@
+{
+  "build": {
+    "maxAppChunkKb": 80,
+    "maxThreeCoreChunkKb": 580,
+    "maxThreeLoadersChunkKb": 170
+  },
+  "assets": {
+    "maxTotalModelsMb": 210,
+    "maxSingleModelMb": 11.5
+  }
+}

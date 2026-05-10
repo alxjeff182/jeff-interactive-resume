@@ -1,0 +1,46 @@
+# Dependencies & build (jangan upload ke GitHub; Vercel jalankan npm install + build)
+node_modules
+dist
+dist-ssr
+
+# Environment — rahasia di Vercel: Project → Settings → Environment Variables
+.env
+.env.*
+!.env.example
+
+# Vercel CLI (link project lokal)
+.vercel
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Local overrides
+*.local
+
+# Vitest
+coverage
+
+# Caches
+.cache
+.eslintcache
+*.tsbuildinfo
+
+# Editor
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS
+.DS_Store
+Thumbs.db
