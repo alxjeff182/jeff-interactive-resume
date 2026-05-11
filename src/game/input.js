@@ -1,30 +1,43 @@
 import * as THREE from 'three'
-import { CAM_ISO_DISTANCE_MAX, CAM_ISO_DISTANCE_MIN } from '../constants.js'
+import {
+  CAM_ISO_DISTANCE_MAX,
+  CAM_ISO_DISTANCE_MIN,
+  CAM_ISO_ZOOM_MIN_COARSE_POINTER,
+} from '../constants.js'
 import { getMessages } from '../i18n/locale.js'
 import { state } from '../state.js'
 import { showAppToast } from '../ui/toast.js'
 import { log } from '../core/logger.js'
 
+function orthoZoomLimits() {
+  const coarse =
+    typeof window !== 'undefined' &&
+    window.matchMedia &&
+    window.matchMedia('(pointer: coarse)').matches
+  const min = coarse
+    ? Math.max(CAM_ISO_DISTANCE_MIN, CAM_ISO_ZOOM_MIN_COARSE_POINTER)
+    : CAM_ISO_DISTANCE_MIN
+  return { min, max: CAM_ISO_DISTANCE_MAX }
+}
+
 /** Zoom in/out (wheel, pinch, ± buttons share this). */
 export function applyCameraZoomFactor(factor) {
-  const next = THREE.MathUtils.clamp(
-    state.cameraControl.zoom * factor,
-    CAM_ISO_DISTANCE_MIN,
-    CAM_ISO_DISTANCE_MAX,
-  )
+  const { min, max } = orthoZoomLimits()
+  const next = THREE.MathUtils.clamp(state.cameraControl.zoom * factor, min, max)
   setCameraZoom(next)
 }
 
 /** Absolute orthographic zoom (clamped). */
 export function setCameraZoom(distance) {
-  const next = THREE.MathUtils.clamp(
-    distance,
-    CAM_ISO_DISTANCE_MIN,
-    CAM_ISO_DISTANCE_MAX,
-  )
+  const { min, max } = orthoZoomLimits()
+  const next = THREE.MathUtils.clamp(distance, min, max)
+  if (Math.abs(next - state.cameraControl.zoom) < 1e-5) return
+
   state.cameraControl.zoom = next
   // Backward-compat for modules not migrated yet.
   state.cameraControl.distance = next
+  state.render.lastZoomChangeAt = performance.now()
+
   const camera = state.camera
   if (camera) {
     camera.zoom = next

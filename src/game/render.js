@@ -169,7 +169,12 @@ export function render() {
 
   const now = performance.now()
   const quality = state.render.quality
-  if (now - quality.lastAdjustAt > quality.adjustCooldownMs) {
+  const sinceZoom = now - state.render.lastZoomChangeAt
+  const zoomQuietMs = 550
+  if (
+    sinceZoom >= zoomQuietMs &&
+    now - quality.lastAdjustAt > quality.adjustCooldownMs
+  ) {
     if (dtMs > quality.lowFrameThresholdMs && quality.currentPixelRatio > quality.minPixelRatio) {
       quality.currentPixelRatio = Math.max(quality.minPixelRatio, quality.currentPixelRatio - 0.1)
       renderer.setPixelRatio(quality.currentPixelRatio)

@@ -12,6 +12,12 @@ export const CAM_ISO_ZOOM_DEFAULT = 2.5
 export const CAM_ISO_ZOOM_MIN = 0.5
 export const CAM_ISO_ZOOM_MAX = 2.5
 
+/**
+ * Floor ortho zoom on coarse pointers (touch). Lower zoom = wider view = much
+ * heavier fill on mobile GPUs; desktop keeps {@link CAM_ISO_ZOOM_MIN}.
+ */
+export const CAM_ISO_ZOOM_MIN_COARSE_POINTER = 1.0
+
 // Backward-compat aliases. Prefer *_ZOOM_* names for new code.
 export const CAM_ISO_DISTANCE_DEFAULT = CAM_ISO_ZOOM_DEFAULT
 export const CAM_ISO_DISTANCE_MIN = CAM_ISO_ZOOM_MIN

@@ -199,10 +199,22 @@ export function setupMobileControls(canvas) {
   syncActionState()
   actionStateTimer = window.setInterval(syncActionState, 180)
 
-  // Pinch zoom on canvas (two-finger)
+  // Pinch zoom on canvas (two-finger) — at most one projection update per frame.
   const pinchPointers = new Map()
   let pinchStartDist = 0
   let pinchStartZoom = 1
+  /** @type {number | null} */
+  let pinchZoomRaf = null
+  /** @type {number | null} */
+  let pinchZoomPending = null
+
+  const flushPinchZoom = () => {
+    pinchZoomRaf = null
+    if (pinchZoomPending !== null) {
+      setCameraZoomDistance(pinchZoomPending)
+      pinchZoomPending = null
+    }
+  }
 
   const distTwo = () => {
     const pts = [...pinchPointers.values()]
@@ -232,7 +244,10 @@ export function setupMobileControls(canvas) {
       e.preventDefault()
       const d = distTwo()
       if (d > 10) {
-        setCameraZoomDistance(pinchStartZoom * (d / pinchStartDist))
+        pinchZoomPending = pinchStartZoom * (d / pinchStartDist)
+        if (pinchZoomRaf === null) {
+          pinchZoomRaf = requestAnimationFrame(flushPinchZoom)
+        }
       }
     }
   }
@@ -247,6 +262,14 @@ export function setupMobileControls(canvas) {
     pinchPointers.delete(e.pointerId)
     if (pinchPointers.size < 2) {
       pinchStartDist = 0
+      if (pinchZoomRaf !== null) {
+        cancelAnimationFrame(pinchZoomRaf)
+        pinchZoomRaf = null
+      }
+      if (pinchZoomPending !== null) {
+        setCameraZoomDistance(pinchZoomPending)
+        pinchZoomPending = null
+      }
     }
   }
 
@@ -278,5 +301,6 @@ export function setupMobileControls(canvas) {
     canvas.removeEventListener('pointermove', onCanvasPointerMove)
     canvas.removeEventListener('pointerup', endPinchPointer)
     canvas.removeEventListener('pointercancel', endPinchPointer)
+    if (pinchZoomRaf !== null) cancelAnimationFrame(pinchZoomRaf)
   }
 }

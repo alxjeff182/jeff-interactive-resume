@@ -68,6 +68,8 @@ export const state = {
     idleFps: 20,
     activeFps: 60,
     hiddenFps: 1,
+    /** Used to pause aggressive DPR changes right after zoom (mobile stability). */
+    lastZoomChangeAt: 0,
     quality: {
       currentPixelRatio: 1,
       // Keep baseline crispness; avoid overly soft rendering on desktop.

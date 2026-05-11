@@ -51,7 +51,12 @@ export function initApp() {
   state.renderer = renderer
   state.scene = scene
   state.camera = camera
-  state.render.quality.maxPixelRatio = Math.min(window.devicePixelRatio, 2)
+  const coarsePointer =
+    typeof window !== 'undefined' &&
+    window.matchMedia &&
+    window.matchMedia('(pointer: coarse)').matches
+  const dprCap = coarsePointer ? 1.25 : 2
+  state.render.quality.maxPixelRatio = Math.min(window.devicePixelRatio, dprCap)
   state.render.quality.currentPixelRatio = state.render.quality.maxPixelRatio
   renderer.setPixelRatio(state.render.quality.currentPixelRatio)
   configurePerfTelemetry({ intervalMs: 5000 })
